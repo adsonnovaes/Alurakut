@@ -24,10 +24,32 @@ function ProfileSidebar(prosps) {
   )
 }
 
+function ProfilerelationsBox(props) {
+  return (
+    <ProfileRelationsBoxWrapper>
+      <h2 className="smallTitle">
+        {props.title} ({props.items.length})
+      </h2>
+      {/* <ul>
+        {props.items.map((itemAtual, index) => {
+          return (
+            <li key={itemAtual}>
+              <a href={`/users/${itemAtual}`}>
+                <img src={`https://github.com/${itemAtual}.png`} />
+                <span>{itemAtual}</span>
+              </a>
+            </li>
+          )
+        })}
+      </ul> */}
+    </ProfileRelationsBoxWrapper>
+  );
+}
+
 export default function Home() {
-  
+
   const githubUser = 'adsonnovaes';
-  const [comunidades, setComunidades ]= React.useState([{
+  const [comunidades, setComunidades] = React.useState([{
     id: new Date().toISOString(),
     title: 'Eu Odeio Acordar Cedo',
     image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
@@ -40,7 +62,19 @@ export default function Home() {
     'rafaballerini',
     'marcobrunodev',
     'felipefialho'
-  ]
+  ];
+  const [seguidores, setSeguidores] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch('https://api.github.com/users/peas/followers')
+      .then(response => {
+        return response.json();
+      })
+      .then(responseJson => {
+        setSeguidores(responseJson);
+      })
+
+  }, [])
 
   function handleCreateCummunity(event) {
     event.preventDefault();
@@ -99,6 +133,22 @@ export default function Home() {
         </div>
 
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
+
+          <ProfilerelationsBox
+            title="Seguidores"
+            items={seguidores}
+          />
+
+          {/* <ProfilerelationsBox
+            title="Pessoas da Comunidade"
+            items={pessoasFavoritas}
+          />
+
+          <ProfilerelationsBox
+            title="Comunidades"
+            items={comunidades}
+          /> */}
+
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
               Pessoas da Comunidade ({pessoasFavoritas.length})
@@ -118,7 +168,7 @@ export default function Home() {
           </ProfileRelationsBoxWrapper>
 
           <ProfileRelationsBoxWrapper>
-          <h2 className="smallTitle">
+            <h2 className="smallTitle">
               Comunidades ({comunidades.length})
             </h2>
             <ul>
