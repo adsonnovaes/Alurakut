@@ -100,7 +100,7 @@ export default function Home(props) {
         const cvdd = responseComplete.data.allCommunities;
 
         setComunidades(cvdd);
-        console.log(responseComplete);
+
       })
 
   }, [])
